@@ -1,0 +1,10 @@
+DROP TABLE WirtualnePolki
+DROP TABLE PozycjeZamowienia
+DROP TABLE Zamowienia
+DROP TABLE DaneDostawy
+DROP TABLE Uzytkownicy
+DROP TABLE Przecenione
+DROP TABLE Promocje
+DROP TABLE Napisal
+DROP TABLE Ksiazki
+DROP TABLE Autorzy
