@@ -1,3 +1,5 @@
+DROP TABLE Recenzje
+DROP TABLE OdlozoneNaPolke
 DROP TABLE WirtualnePolki
 DROP TABLE PozycjeZamowienia
 DROP TABLE Zamowienia
