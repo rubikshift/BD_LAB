@@ -8,7 +8,7 @@ CREATE TABLE Ksiazki (
 	ISBN	CHAR(13) PRIMARY KEY,
 	Tytul	VARCHAR(50) NOT NULL,
 	Cena	SMALLMONEY NOT NULL,
-	Opis	VARCHAR,
+	Opis	VARCHAR(1000),
 	Wydawca VARCHAR(50) NOT NULL
 )
 
@@ -36,8 +36,8 @@ CREATE TABLE Przecenione (
 
 CREATE TABLE Uzytkownicy (
 	ID			INT PRIMARY KEY,
-	Email		VARCHAR(50) NOT NULL,
-	PassHash	CHAR(256) NOT NULL
+	Email		VARCHAR(50) NOT NULL UNIQUE,
+	PassHash	CHAR(64) NOT NULL
 )
 
 CREATE TABLE DaneDostawy (
@@ -54,12 +54,14 @@ CREATE TABLE Zamowienia (
 	DataZlozenia		DATE NOT NULL,
 	Wartosc				SMALLMONEY NOT NULL,
 	SposobDostawy		INT REFERENCES DaneDostawy NOT NULL,
+	IDUzytkownika		INT REFERENCES Uzytkownicy NOT NULL,
 	DataWyslania		DATE,
 	DataZrealizowania	DATE
 )
 CREATE TABLE PozycjeZamowienia (
 	NrZamowienia	INT REFERENCES Zamowienia NOT NULL,
 	ISBNKsiazki		CHAR(13) REFERENCES Ksiazki NOT NULL,
+	Ilosc			INT NOT NULL
 
 	PRIMARY KEY	(NrZamowienia, ISBNKsiazki)
 )
@@ -72,5 +74,19 @@ CREATE TABLE WirtualnePolki (
 )
 
 CREATE TABLE OdlozoneNaPolke (
-	Polka	FOREIGN KEY REFERENCES WirtualnePolki
+	ISBNKsiazki		CHAR(13) REFERENCES Ksiazki NOT NULL,
+	IDUzytkownika	INT REFERENCES Uzytkownicy NOT NULL,
+	NazwaPolki		VARCHAR(50) NOT NULL,
+
+	PRIMARY KEY(ISBNKsiazki, IDUzytkownika, NazwaPolki),
+	FOREIGN KEY(IDUzytkownika, NazwaPolki) REFERENCES WirtualnePolki
+)
+
+CREATE TABLE Recenzje (
+	IDUzytkownika	INT REFERENCES Uzytkownicy NOT NULL,
+	ISBNKsiazki		CHAR(13) REFERENCES Ksiazki NOT NULL,
+	Nota			INT NOT NULL,
+	Tresc			VARCHAR(1000),
+
+	PRIMARY KEY(IDUzytkownika, ISBNKsiazki)
 )
