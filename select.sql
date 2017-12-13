@@ -21,3 +21,15 @@ SELECT *
 
 SELECT *
 	FROM Zamowienia
+
+SELECT *
+	FROM PozycjeZamowienia
+
+SELECT *
+	FROM WirtualnePolki
+
+SELECT *
+	FROM OdlozoneNaPolke
+
+SELECT *
+	FROM Recenzje

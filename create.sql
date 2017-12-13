@@ -24,7 +24,9 @@ CREATE TABLE Promocje (
 	Nazwa			VARCHAR(50) NOT NULL,
 	DataRozpoczecia	DATE NOT NULL,
 	DataZakonczenia	DATE NOT NULL,
-	Obnizka			INT NOT NULL
+	Obnizka			INT NOT NULL,
+
+	CHECK(Obnizka > 0 AND Obnizka < 100)
 )
 
 CREATE TABLE Przecenione (
@@ -63,7 +65,8 @@ CREATE TABLE PozycjeZamowienia (
 	ISBNKsiazki		CHAR(13) REFERENCES Ksiazki NOT NULL,
 	Ilosc			INT NOT NULL
 
-	PRIMARY KEY	(NrZamowienia, ISBNKsiazki)
+	PRIMARY KEY	(NrZamowienia, ISBNKsiazki),
+	CHECK(Ilosc > 0)
 )
 
 CREATE TABLE WirtualnePolki (
@@ -88,5 +91,6 @@ CREATE TABLE Recenzje (
 	Nota			INT NOT NULL,
 	Tresc			VARCHAR(1000),
 
-	PRIMARY KEY(IDUzytkownika, ISBNKsiazki)
+	PRIMARY KEY(IDUzytkownika, ISBNKsiazki),
+	CHECK(Nota > 0 AND Nota <=5)
 )
