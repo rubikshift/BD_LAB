@@ -171,11 +171,11 @@ INSERT INTO WirtualnePolki (IDUzytkownika, Nazwa)
 
 INSERT INTO OdlozoneNaPolke (ISBNKsiazki, IDUzytkownika, NazwaPolki)
 	VALUES('9788375780697', 1, 'Lista Zyczen')
-/*WIELE KSIAZEK NA POLKACH*/
 INSERT INTO OdlozoneNaPolke (ISBNKsiazki, IDUzytkownika, NazwaPolki)
-	VALUES('9788378858515', 2, 'Lista Zyczen')
+	VALUES('9788378858515', 1, 'Lista Zyczen')
+
 INSERT INTO OdlozoneNaPolke (ISBNKsiazki, IDUzytkownika, NazwaPolki)
-	VALUES('9788378859987', 2, 'Przeczytane')
+	VALUES('9788378859987', 2, 'Lista Zyczen')
 INSERT INTO OdlozoneNaPolke (ISBNKsiazki, IDUzytkownika, NazwaPolki)
 	VALUES('9788375780697', 2, 'Przeczytane')
 
