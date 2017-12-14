@@ -82,7 +82,7 @@ CREATE TABLE Zamowienia (
 CREATE TABLE PozycjeZamowienia (
 	NrZamowienia	INT NOT NULL,
 	ISBNKsiazki		CHAR(13) NOT NULL,
-	Ilosc			INT NOT NULL
+	Ilosc			INT NOT NULL,
 
 	PRIMARY KEY	(NrZamowienia, ISBNKsiazki),
 	FOREIGN KEY(NrZamowienia) REFERENCES Zamowienia,
@@ -106,7 +106,8 @@ CREATE TABLE OdlozoneNaPolke (
 	NazwaPolki		VARCHAR(50) NOT NULL,
 
 	PRIMARY KEY(ISBNKsiazki, IDUzytkownika, NazwaPolki),
-	FOREIGN KEY(IDUzytkownika, NazwaPolki) REFERENCES WirtualnePolki
+	FOREIGN KEY(IDUzytkownika, NazwaPolki) REFERENCES WirtualnePolki,
+	FOREIGN KEY(ISBNKsiazki) REFERENCES Ksiazki
 )
 
 CREATE TABLE Recenzje (
