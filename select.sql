@@ -1,35 +1,15 @@
-SELECT *
-	FROM Autorzy
+SELECT Imie, Nazwisko, Tytul
+	FROM Autorzy, Ksiazki, Napisal
+	WHERE Napisal.IDAutora = Autorzy.Id AND Napisal.ISBNKsiazki = Ksiazki.ISBN
+	ORDER BY Tytul
 
-SELECT *
-	FROM Ksiazki
 
-SELECT *
-	FROM Napisal
+SELECT Tytul, Nazwa, ROUND(Cena*Obnizka/100, 2) AS Wartosc
+	FROM Ksiazki, Promocje, Przecenione
+	WHERE Ksiazki.ISBN = Przecenione.ISBNKsiazki AND Promocje.ID = Przecenione.IDPromocji
+	ORDER BY Wartosc DESC
 
-SELECT *
-	FROM Promocje
-
-SELECT *
-	FROM Przecenione
-
-SELECT *
-	FROM Uzytkownicy
-
-SELECT *
-	FROM DaneDostawy
-
-SELECT *
-	FROM Zamowienia
-
-SELECT *
-	FROM PozycjeZamowienia
-
-SELECT *
-	FROM WirtualnePolki
-
-SELECT *
-	FROM OdlozoneNaPolke
-
-SELECT *
-	FROM Recenzje
+SELECT Tytul, ROUND(AVG(CAST(Nota AS FLOAT)), 2) AS SredniaOcen
+	FROM Ksiazki, Recenzje
+	WHERE Ksiazki.ISBN = Recenzje.ISBNKsiazki
+	GROUP BY Tytul
