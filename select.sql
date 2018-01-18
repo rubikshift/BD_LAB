@@ -4,28 +4,42 @@ CREATE VIEW AutorzyIKsiazki
 		FROM Autorzy, Ksiazki, Napisal
 		WHERE Napisal.IDAutora = Autorzy.Id AND Napisal.ISBNKsiazki = Ksiazki.ISBN
 
-/*Zapytanie o wszystkie książki dostępny w sklepie*/
+/*Wszystkie książki dostępne w sklepie*/
 SELECT *
 	FROM AutorzyIKsiazki
 	ORDER BY Tytul
 
 DROP VIEW AutorzyIKsiazki
 
-/*Lista wszystkich dostępnych książek, z uwzględnieniem promocji*/
+/*Lista cen wszystkich dostępnych książek, z uwzględnieniem promocji*/
 SELECT Tytul, Cena
 	FROM Ksiazki
 	WHERE NOT EXISTS (
 		SELECT *
-			FROM Przecenione
-			WHERE Ksiazki.ISBN = Przecenione.ISBNKsiazki
+			FROM Przecenione, Promocje
+			WHERE Ksiazki.ISBN = Przecenione.ISBNKsiazki AND
+				Przecenione.IDPromocji = Promocje.ID AND
+				Promocje.DataRozpoczecia < CAST(GETDATE() AS DATE) AND
+				Promocje.DataZakonczenia > CAST(GETDATE() AS DATE)
 	)
 	UNION
 	SELECT Tytul, ROUND(Ksiazki.Cena - Ksiazki.Cena*Obnizka/100, 2) AS Cena
 		FROM Ksiazki, Promocje, Przecenione
-		WHERE Ksiazki.ISBN = Przecenione.ISBNKsiazki AND Promocje.ID = Przecenione.IDPromocji
+		WHERE Ksiazki.ISBN = Przecenione.ISBNKsiazki AND 
+			Promocje.ID = Przecenione.IDPromocji AND
+			Promocje.DataRozpoczecia < CAST(GETDATE() AS DATE) AND
+			Promocje.DataZakonczenia > CAST(GETDATE() AS DATE) 
 		ORDER BY Cena DESC
 
-/*Pobranie średniej ocen danego tytułu (jeżeli był oceniony)*/
+/*Wszystkie obecnie trwajace promocje*/
+SELECT Nazwa, DataRozpoczecia, DataZakonczenia, COUNT(ISBNKsiazki) AS IloscPrzecenionych
+	FROM Promocje, Przecenione
+	WHERE Promocje.ID = Przecenione.IDPromocji AND 
+		Promocje.DataRozpoczecia < CAST(GETDATE() AS DATE) AND
+		Promocje.DataZakonczenia > CAST(GETDATE() AS DATE)
+	GROUP BY Nazwa, DataRozpoczecia, DataZakonczenia
+
+/*Średniej ocen danego tytułu (jeżeli był oceniony)*/
 SELECT Tytul, ROUND(AVG(CAST(Nota AS FLOAT)), 2) AS SredniaOcen
 	FROM Ksiazki, Recenzje
 	WHERE Ksiazki.ISBN = Recenzje.ISBNKsiazki
@@ -48,6 +62,13 @@ SELECT Email, SUM(Ilosc) as IloscKupionychKsiazek
 	)
 	GROUP BY Email
 	ORDER BY IloscKupionychKsiazek ASC
+
+/*Historie zamowien poszczegolnych uzytkownikow*/
+SELECT Email, DataZlozenia, Tytul, Ilosc
+	FROM Uzytkownicy, Zamowienia, PozycjeZamowienia, Ksiazki
+	WHERE Zamowienia.IDUzytkownika = Uzytkownicy.ID AND 
+		Zamowienia.NrZamowienia = PozycjeZamowienia.NrZamowienia AND
+		PozycjeZamowienia.ISBNKsiazki = Ksiazki.ISBN
 
 /*Wyswietlenie wirtualnych półek (dla poszczegółnych użytkowników) oraz ich zawartości*/
 SELECT Email, Nazwa as NazwaPolki, Tytul

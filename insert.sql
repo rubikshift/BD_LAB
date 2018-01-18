@@ -81,9 +81,9 @@ INSERT INTO Napisal (IDAutora, ISBNKsiazki)
 	
 	
 INSERT INTO Promocje (ID, Nazwa, DataRozpoczecia, DataZakonczenia, Obnizka)
-	VALUES(1, 'Swiateczna Wyprzedaz', '2017-12-06', '2017-12-23', 50)
+	VALUES(1, 'Swiateczna Wyprzedaz', '2017-12-06', '2018-12-23', 50)
 INSERT INTO Promocje (ID, Nazwa, DataRozpoczecia, DataZakonczenia, Obnizka)
-	VALUES(2, 'Promocja na Kinga', '2017-12-03', '2017-12-10', 90)
+	VALUES(2, 'Promocja na Kinga', '2017-12-03', '2018-12-10', 90)
 
 INSERT INTO Przecenione (IDPromocji, ISBNKsiazki)
 	VALUES(2, '9788378858515')
